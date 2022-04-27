@@ -23,6 +23,7 @@ class FreshApp:
     
     about: str
     description: str
+    icon: str
 
     categories: List[str]
     features: List[str]
@@ -78,6 +79,8 @@ def find_relevant_apps(business_description: str):
 
 if __name__ == '__main__':
     rel, weights = find_relevant_apps(input())
+    print(list(zip(rel, weights)))
+    raise
     for app in rel[:10]:
         print('=' * 50)
         print(app.name, f'https://appstore.freshbooks.com/details/{app.safe_name}')

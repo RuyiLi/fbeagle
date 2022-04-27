@@ -12,11 +12,12 @@ Hunt down apps to improve your FreshBooks experience.
 3. Run `source setenv.sh` to load the values in the current shell environment.
     - Alternatively, refactor the program to use `dotenv`.
 4. Run `python data/fetch.py` to populate the dataset. A file called `data/data.pickle` should appear.
+5. Run the FastAPI server with `python -m uvicorn fbeagle.api:app --reload`.
 
 ## Devlog
 
 - Realized that `business_description` did not mean what I thought it meant. Only apparent usable survey metric is `industry` now.
-- Industry responose from FB API identity call seems to be blank even if specified in the survey, so OAuth app seems infeasible now.
+- Industry responose from FB API identity call seems to be blank even if specified in the survey, so OAuth app seems unbeneficial now.
 - App now functions as a standalone page that asks users to describe their business and gives app recommendations based on this.
 
 ## Future
@@ -25,6 +26,7 @@ Hunt down apps to improve your FreshBooks experience.
 - App analytics
     - How much are businesses using a particular app? Why did they uninstall it? How long did they end up using it for?
     - which industries prefer which apps? i.e. correlation between various aspects of a business and which apps they use the most
+    - Obtain quantifiable metrics for what determines a "good recommendation"
 
 ## References
 

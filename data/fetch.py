@@ -17,6 +17,7 @@ DESIRED_FIELDS = dict(
     categories='customData.categories',
     features='customData.keyFeatures',
     keywords='customData.searchKeywords',
+    icon='customData.icon',
 )
 
 auth = (
@@ -27,9 +28,13 @@ auth = (
 
 def normalize_value(obj: any):
     if isinstance(obj, list):
-        print(111, obj)
         return ','.join(obj)
     return obj
+
+
+html_tag_pattern = re.compile(r'<.+>')
+def strip_html_tags(s: str):
+    return re.sub(html_tag_pattern, '', s)
 
 
 item_access_pattern = re.compile(r'^(.+)\[(\d+)\]$')
@@ -53,6 +58,11 @@ def itemgetter_recursive(
                 target = obj[field]
 
             if rest: return get_item(target, rest)
+            if isinstance(target, str): return strip_html_tags(target)
+            if isinstance(target, list): return [
+                strip_html_tags(el) if isinstance(el, str) else el
+                for el in target
+            ]
             return target
         except KeyError:
             if not ignore_missing: raise

@@ -1,19 +1,14 @@
-from fastapi import Body, FastAPI
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
-from models import Business
-from recommender import recommend
+from .recommender import find_relevant_apps
 
 app = FastAPI()
 
-@app.get('/')
-def index():
-    return f'''
-    <p>Hello, World!</p>
-    '''
-
-@app.post('/generate_recommendations')
-def generate_recommendations(business: Business):
+@app.get('/find')
+def generate_recommendations(desc: str):
     # Webhook that fires when a user completes the survey.
-    res = recommend(business)
-    print(res)
-    return res
+    rel, weights = find_relevant_apps(desc)
+    return [app.__dict__ for app in rel[:10]]
+
+app.mount('/', StaticFiles(directory='public', html=True), name='public')
